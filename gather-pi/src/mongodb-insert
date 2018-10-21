@@ -1,0 +1,23 @@
+#!/bin/bash
+
+. mongodb_insert.env
+
+/usr/sbin/logtail -f /tmp/serial_temperature.log > /tmp/temp.$$
+
+cat /tmp/temp.$$ |
+	~/bin/mongo $mlab_connectstring -u $mlab_username -p $mlab_password
+
+cat /tmp/temp.$$ | grep D1.1 | 
+sed -e 's/.*(//' -e 's/).*//' | while read line; do
+	# post json to dweet.io
+	curl    \
+		--silent \
+		--header "Content-Type:application/json"    \
+		--header "Accept: application/json"  \
+		--request POST    \
+		--data "$line" \
+		https://dweet.io/dweet/quietly/for/$dweetThing >> /tmp/dweet.log 2>&1
+	sleep 5
+done
+
+rm -f /tmp/temp.$$

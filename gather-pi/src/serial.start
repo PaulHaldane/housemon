@@ -1,0 +1,4 @@
+#!/bin/sh
+
+tty=ttyAMA0
+nohup ./serial.pl $tty > /tmp/serial_temperature.log 2>/tmp/serial_temperature.err &

@@ -1,0 +1,2 @@
+# m h  dom mon dow   command
+5,25,45 * * * * /home/pi/src/mongodb-insert >/dev/null 2>&1
