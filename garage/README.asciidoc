@@ -1,0 +1,10 @@
+
+= Garage monitoring
+
+Read messages from Arduino (sent over xinoRf) about state of garage door (open/closed),
+temperature and air quality. 
+Send measurements to dweet.io at regular intervals to be picked up by dashboard.
+Generate mongodb insert statements for storing readings.
+
+When state of garage door changes, send slack notification.
+
