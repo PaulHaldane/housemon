@@ -1,0 +1,13 @@
+
+= Random environmental data monitoring collection, presentation and alerting
+
+Random collection of scripts, programs and configs to gather environmental data
+either from local sensors attached to Arduinos or web services for sensors managed
+by other people (e.g. Urban Observatory).
+
+Local sensors generally attached to XinoRf Arduinos which send readings wirelessly to a Rasperry Pi with
+Slice of Pi XinoRf attached.
+
+Some alerting done via perl script sending to Slack via web hook.
+Also send readings to dweet.io for later use by local instance of freeboard
+and option to store long term in mongodb.
