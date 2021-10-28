@@ -69,6 +69,7 @@ my %last;
 
 my $dots = 0;
 while ($timeout > 0) {
+	my $doorStateChange = 0;
 	my $tempIndex;
 	my $concIndex;
         my ($count, $saw) = $PortObj->read(255); # will read _up to_ 255 chars
@@ -137,8 +138,10 @@ while ($timeout > 0) {
 				$tempIndex++;
 			} elsif ($message =~ /^DOOR(.+)/) {
 				my $doorState = $1;
+				$doorStateChange = 0;
 				if ($doorState ne $doorStateCurrent) {
 					print "# change from $doorStateCurrent to $doorState\n";
+					$doorStateChange = 1;
 					if ($slackwebhook && (length($slackwebhook) > 0)) {
 						my $command = sprintf 'curl --silent --show-error -X POST --data-urlencode "payload={\"channel\": \"#sensors\", \"username\": \"sensors\", \"text\": \"Garage door is %s was %s\"}" %s', $doorState, $doorStateCurrent, $slackwebhook;
 						my $slackResponse = `$command`;
@@ -156,7 +159,7 @@ while ($timeout > 0) {
         } else {
                 $timeout--;
         }
-	if ((time() - $lastDweet) > $dweetInterval) {
+	if (((time() - $lastDweet) > $dweetInterval) || ($doorStateChange == 1)) {
 		if ($dweetWebhook && (length($dweetWebhook) > 0)) {
 			my $timestamp = time();
 			my $dataJson = '{ ';
