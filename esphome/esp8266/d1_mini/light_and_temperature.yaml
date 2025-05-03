@@ -1,0 +1,42 @@
+esphome:
+  name: lr
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  - platform: esphome
+    password: ""
+
+wifi:
+  ssid: ""
+  password: ""
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Lr Fallback Hotspot"
+    password: "H2xtXXQ4r2Up"
+
+captive_portal:
+
+one_wire:
+  - platform: gpio
+    pin: GPIO02
+
+sensor:
+  - platform: adc
+    pin: GPIO17
+    name: "Test brightness"
+    update_interval: 60s
+    filters:
+      - multiply: 3.3
+  - platform: dallas_temp
+    name: "temperature"
+    update_interval: 60s
