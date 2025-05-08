@@ -44,6 +44,11 @@ sensor:
     name: "temperature"
     update_interval: 60s
 
+deep_sleep:
+  id: deep_sleep_1
+  run_duration: 10s
+  sleep_duration: 20min
+
 mqtt:
   broker: !secret mqtt_broker
   username: !secret mqtt_log_user
@@ -58,3 +63,12 @@ mqtt:
   will_message:
     topic: esphome
     payload: "died"
+  on_message:
+    - topic: lr/ota_mode
+      payload: 'ON'
+      then:
+        - deep_sleep.prevent: deep_sleep_1
+    - topic: lr/ota_mode
+      payload: 'ON'
+      then:
+        - deep_sleep.enter: deep_sleep_1
